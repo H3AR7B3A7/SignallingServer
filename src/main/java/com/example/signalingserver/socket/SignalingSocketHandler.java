@@ -67,11 +67,11 @@ public class SignalingSocketHandler extends TextWebSocketHandler {
         final SignalMessage message = new SignalMessage();
         message.setType(HANGUP_TYPE);
 
-        sessions.forEach(webSocket -> {
+        sessions.forEach(session -> {
             try {
-                webSocket.sendMessage(new TextMessage(getString(message)));
+                session.sendMessage(new TextMessage(getString(message)));
             } catch (Exception e) {
-                LOG.warn("!!! Error while sending message. !!!", e);
+                LOG.warn("!!! Error while sending hangup message to {} !!!", session.getId());
             }
         });
     }
