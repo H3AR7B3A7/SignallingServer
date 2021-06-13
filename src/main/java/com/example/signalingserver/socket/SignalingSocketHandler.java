@@ -16,12 +16,10 @@ import java.util.Set;
 
 @Service
 public class SignalingSocketHandler extends TextWebSocketHandler {
-    private final Set<WebSocketSession> sessions = new HashSet<>();
+    private final Set<WebSocketSession> sessions = new HashSet<>(); // A map could be used to identify different users
 
     private static final Logger LOG = LoggerFactory.getLogger(SignalingSocketHandler.class);
     private static final ObjectMapper objectMapper = new ObjectMapper();
-
-    private static final String HANGUP_TYPE = "hangup";
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {
@@ -32,6 +30,7 @@ public class SignalingSocketHandler extends TextWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) {
         LOG.info("*** Handling TextMessage : {} ***", message.getPayload());
+        // If the message contained callee information, we could map to an object and publish to one specific session
         publishMessageToOtherClients(session, message);
     }
 
@@ -65,11 +64,10 @@ public class SignalingSocketHandler extends TextWebSocketHandler {
 
     private void sendHangUpMessageToOtherSessions() {
         final SignalMessage message = new SignalMessage();
-        message.setType(HANGUP_TYPE);
 
         sessions.forEach(session -> {
             try {
-                session.sendMessage(new TextMessage(getString(message)));
+                session.sendMessage(new TextMessage(getString(message)));  // "{}" - Empty object: could contain sender information
             } catch (Exception e) {
                 LOG.warn("!!! Error while sending hangup message to {} !!!", session.getId());
             }
