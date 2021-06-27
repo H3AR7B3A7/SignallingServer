@@ -17,7 +17,7 @@ developed for the browser, mobile platforms, and IoT devices, and allow them all
 
 
 We can find a slightly more advanced example of a Spring signalling server
-[here](https://github.com/hendisantika/springboot-webrtc/blob/main/src/main/java/com/hendisantika/springbootwebrtc/SignalingSocketHandler.java).
+[here](https://github.com/hendisantika/springboot-webrtc).
 
 ---
 *Work in progress...*
